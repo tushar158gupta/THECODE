@@ -15,32 +15,48 @@ modifier onlyowner(){
     _;
 }
 
-// payable make the function to take money fromm the person and send it to the contract
+
+// ONLY CHECKING THE BALANCE==================================
+// the contracts
+function getcontractbalance()public view returns (uint){
+
+// return this.address.balance
+return address(this).balance;
+}
+
+// the address which is provided 
+function getaddressbalance(address useraddress)public view returns (uint){
+ return useraddress.balance;
+}
+
+// the owners
+function getownerbalance()public view returns(uint){
+return owner.balance;
+}
+
+// SENDING THE ETHER ====================================
+
 // user -> contract
 function SendToContract() external payable{
 
 }
 
-
-function sendback()public {
-
-
-require(address(this).balance >= 2.5 ether , "not having enough ice bitch ass");
-
-    for(uint i = 1 ; i<=5 ; i++){
-payable(msg.sender).transfer(.5 ether);
-    }
+// contract -> owner
+function SendMoneyToOwner(uint amtofether)public {
+payable(msg.sender).transfer(amtofether*1 ether);
 }
 
+// contract -> address
+function  SendMoneyToAddressFromContract  (address payable  recipient , uint amtinwwi ) public{
+require(address(this).balance > amtinwwi  , "Contract do not have enough ether to send" );
+recipient.transfer(amtinwwi);
+}
 
-    function sendback1() public {
-        // Make sure contract has enough ETH
-        require(address(this).balance >= 2.5 ether, "Not enough ETH");
-
-        for (uint i = 1; i <= 5; i++) {
-            payable(msg.sender).transfer(0.5 ether);
-        }
-    }
+// oneuser -> anotheruser
+function SendMoneyToAddressViaAddress(address payable recipient) public payable{
+    require(msg.sender.balance>msg.value , "not have enough balance");
+    recipient.transfer(msg.value);
+}
 
 
    
