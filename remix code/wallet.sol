@@ -3,9 +3,26 @@
 pragma solidity >=0.8.2 <0.9.0;
 
 contract Storage {
-
+// primitive data types
 address public owner;
 string public fallstring;
+uint timestampnow = 1754123429;
+uint public delaytime = 2 hours;
+
+// Struct 
+struct TransactionHistory{
+address sender;
+address reciever;
+uint amountsent;
+uint Timesatamp;
+}
+
+//Array
+TransactionHistory  [] public transactionarray;
+
+// Map
+mapping(address=>uint) public susmap;
+
 
 constructor(){
     owner = msg.sender;
@@ -17,11 +34,23 @@ modifier onlyowner(){
     _;
 }
 
+modifier checksussy(){
+    require(susmap[msg.sender]<=10 , "You are sus");
+    _;
+}
+
 // Events rae used to maintain the logs
 event tusharevent(address personwhoranfucntion , uint etheramt);
 
 
 event questionevent(address senderaddress , address recieveraddress , uint etheramt);
+
+
+// changing the owner
+function changeowner( address newowneraddress) public onlyowner{
+owner = newowneraddress;
+}
+
 
 // ONLY CHECKING THE BALANCE==================================
 // the contracts
@@ -71,6 +100,25 @@ function SendMoneyToOwnerViaUser() public payable {
     payable (owner).transfer(msg.value);
 
 }
+// saving the traction history of the sender , reciever , amt and the timpastamp
+
+function sendetherandlogthetransaction(address payable reciever) public payable checksussy {
+    require(reciever!= address(0) , "the address is in correct ");
+    require (block.timestamp < timestampnow+delaytime , "you can not do the transaction");
+reciever.transfer(msg.value);
+
+
+TransactionHistory memory txn =  TransactionHistory(msg.sender , reciever , msg.value , block.timestamp);
+
+transactionarray.push(txn);
+
+}
+
+function GetAllTheTransactions () public view returns (TransactionHistory [] memory ) {
+return transactionarray;
+}
+
+
 // this was necessary fotr a fallback to work and used to send the mether to the contract without any function is called using empty calldata
 receive() external payable {
 
@@ -80,9 +128,14 @@ emit tusharevent(msg.sender, msg.value);
 
  }
 
+ function incsussylist(address sender) public {
+    susmap[sender] +=1;
+ }
+
 // when a wrong fucntion that does not even exist is called but the user has tried to send some money then the money will be sent to the contract.
 fallback() external payable   { 
     fallstring = "the function has been fallen back";
+    incsussylist(msg.sender);
 
 }
    
