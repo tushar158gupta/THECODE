@@ -3,14 +3,6 @@
 pragma solidity >=0.8.2 <0.9.0;
 
 contract Storage {
-<<<<<<< HEAD
-    address public owner;
-    string public fallstring;
-
-    constructor() {
-        owner = msg.sender;
-    }
-=======
 // primitive data types
 address public owner;
 string public fallstring;
@@ -31,7 +23,6 @@ TransactionHistory  [] public transactionarray;
 // Map
 mapping(address=>uint) public susmap;
 
->>>>>>> c51acaa87fa6938f97e578343d92e8e38fb45a29
 
     //  a modifier
     modifier onlyowner() {
@@ -124,8 +115,6 @@ mapping(address=>uint) public susmap;
 
     //withdraw all the ether from the contract
 }
-<<<<<<< HEAD
-=======
 
 //  a modifier
 modifier onlyowner(){
@@ -239,4 +228,3 @@ fallback() external payable   {
 }
    
 }
->>>>>>> c51acaa87fa6938f97e578343d92e8e38fb45a29
